@@ -67,8 +67,8 @@ type GinJWTMiddleware struct {
 
 // Login form structure.
 type Login struct {
-	Username string `form:"username" json:"username" binding:"required"`
-	Password string `form:"password" json:"password" binding:"required"`
+	Username string `form:"access_key" binding:"required"`
+	Password string `form:"secret_key" binding:"required"`
 }
 
 // MiddlewareInit initialize jwt configs.
@@ -163,7 +163,7 @@ func (mw *GinJWTMiddleware) LoginHandler(c *gin.Context) {
 
 	var loginVals Login
 
-	if c.BindJSON(&loginVals) != nil {
+	if c.Bind(&loginVals) != nil {
 		mw.unauthorized(c, http.StatusBadRequest, "Missing Username or Password")
 		return
 	}
